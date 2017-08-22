@@ -109,21 +109,7 @@ if (theGrid[i].nodeTemperature >= 10000){nodeObjectArray[index].nodeColor ="#ffa
 
 
 
-// detect selected/heated node change color to yellow 
-$(function() {   
-$('.element').click(function(){
-    $(this).css('background', '#ffa500');
-	// get node list
-	var nodeList = document.getElementsByClassName("element");
-	// get index of selected node
-	var gridIndex = Array.prototype.indexOf.call(nodeList,this);
-	// spread heat over grid
-	spreadHeat(gridIndex,theGrid);
-	updateGrid(nodeList)
-	// update grid should return the correct color based on temperature
-	// update the correct element in the node list with the correct color
-  });
-});
+/  
 
 
 	
