@@ -1,7 +1,7 @@
 "use strict";
 // set up heat element object; 
 
-function heatElement (temp,redValue,greenValue,blueValue,userSelected){
+var heatElement = function (temp,redValue,greenValue,blueValue,userSelected){
     this.temp = temp;
     this.redValue = redValue;
     this.greenValue = greenValue;
@@ -18,8 +18,38 @@ var gridSize = gridView.length;
 for (let x=0;x<=gridSize;x++){
 gridData[x] = new heatElement(0,0,0,0,false);
 }
+
+function gridTest (){
+    console.log("grid test start");
+    var testRed = 0;
+    var testGreen = 0;
+    var testBlue = 0;
+    for(var bigLoop=0; bigLoop<=765; bigLoop++){
+        if (bigLoop<255){testRed +=1;}
+        if (bigLoop>255 && bigLoop<=510){testGreen +=1;}
+        if (bigLoop>510){testBlue +=1;}
+        for (let index = 0; index <=99 ; index++){
+        gridView.item(index).style.backgroundColor = "rgb("+testRed+","+testGreen+","+testBlue+")";
+        console.log(testRed,testGreen,testBlue);
+        // setInterval(function(){ console.log("change"); }, 10000);
+        }
+         
+}
+}
+  
+
+    
+  
+
+function updateView (){
+    console.log("update view fired");
+    for (let z = 0; z < gridSize; z++){
+        gridView.item[z].style.backgroundColor = "rgb(" +  gridData[z].redValue + "," + gridData[z].greenValue + "," + gridData[z].blueValue + ")";
+    }
+}
 // select element event
 function selectEvent (index){
+console.log("select event fired")
 gridData[index].userSelected = true; 
 if (gridData[index].temp < 255){
     gridData[index].redValue += 1; 
@@ -33,11 +63,13 @@ if (gridData[index].temp >= 510 && gridData[index] < 765){
  updateView(); 
 }
 // de-select element event
+console.log("de-select event fired");
 function unselectEvent (index){
     gridData[index].userSelected = false;
 }
 // cycle grid and update grid data
 function heatCycle (){
+    console.log("heat cycle fired");
     for (let j =0; j<100; j++){
       if (gridData[j].userSelected = false){  
         //top left corner
@@ -116,19 +148,23 @@ for (let k=0; k< gridSize; k++){
 updateView();
 }
 // update grid view based on new grid data
-function updateView (){
-    for (let z = 0; z < gridSize; z++){
-        gridView[z].style.backgroundColor = "rgb(" +  gridData[z].redValue + "," + gridData[z].greenValue + "," + gridData[z].blueValue + ")";
-    }
-}
+
 // detect selected grid element and perform appropriate actions
 function setEvents(){
- for (let i=0; i< gridSize; i++){
-    gridView[i].addEventListener("mouseover",selectEvent(i));
-    gridView[i].addEventListener("mouseout",unselectEvent(i));
-}
-}
+    for (let i = 0; i < gridSize; i++){
+    
+       gridView[i].addEventListener("mouseover", function() {gridView[i].style.backgroundColor = "red"});
+       gridView[i].addEventListener("mouseout", function() {gridView[i].style.backgroundColor = "black"});
+   
+       //gridView[i].addEventListener("mouseover",selectEvent(i));
+       //gridView[i].addEventListener("mouseout",unselectEvent(i));
+     }  
+   }
+   
 //grid start
+
 setEvents();
-setInterval(heatCycle(),10000);
-setInterval(coolCycle(),50000); 
+gridTest();
+
+// setInterval(heatCycle(),10000);
+// setInterval(coolCycle(),50000); 
