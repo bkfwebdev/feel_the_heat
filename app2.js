@@ -19,7 +19,7 @@ for (let x=0;x<=gridSize;x++){
 gridData[x] = new heatElement(0,0,0,0,false);
 }
 
-function gridTest (){
+function gridTest (){ 
     console.log("grid test start");
     var testRed = 0;
     var testGreen = 0;
@@ -41,12 +41,7 @@ function gridTest (){
     
   
 
-function updateView (){
-    console.log("update view fired");
-    for (let z = 0; z < gridSize; z++){
-        gridView.item[z].style.backgroundColor = "rgb(" +  gridData[z].redValue + "," + gridData[z].greenValue + "," + gridData[z].blueValue + ")";
-    }
-}
+  
 // select element event
 function selectEvent (index){
 console.log("select event fired")
