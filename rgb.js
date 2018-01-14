@@ -1,12 +1,25 @@
- var theGrid = document.getElementsByClassName("gridElement");
-
+var gridData = [];
+var theGrid = document.getElementsByClassName("gridElement");
 var gridSize = theGrid.length;
 
-var colorThat = function (x, red, green , blue , grid){
+function HeatElement(theTemp,theColor,selected,rep){
+    this.temperature = theTemp;
+    this.colorString = theColor;
+    this.isSelected = selected;
+    this.screenrep = rep;
+ }
+
+ function initializeGridData(){
+ for (index = 0; index <= 99; index++){
+     gridData[index] = new HeatElement(0,"black",false,theGrid[index]);
+ }
+ }
+
+function colorThat(x, red, green , blue , grid){
     grid[x].style.backgroundColor = 'rgb(' + red + ',' + green + ',' + blue + ')';
 }
 
-var randomColors = function () {
+function randomColors() {
 for (x = 0 ; x < gridSize ; x++){
 let red = Math.floor(Math.random()*255);
 let green = Math.floor(Math.random()*255);
@@ -15,30 +28,6 @@ console.log(red,green,blue);
 colorThat(x,red,green,blue,theGrid);
 }
 }
-// setInterval (function(){randomColors()},1000);
-
-
-function HeatElement(theTemp,theColor,selected,rep){
-   this.temperature = theTemp;
-    this.colorString = theColor;
-    this.isSelected = selected;
-    this.screenrep = rep;
-}
-// set up data/objects for the the grid
-gridData = [];
-for (index = 0; index <= 99; index++){
-    gridData[index] = new HeatElement(0,"black",false,theGrid[index]);
-}
-// console.log(gridData);
-
-function setEvents (){
-   for (index = 0; index < gridSize; index++){
-       gridData[index].screenrep.addEventListener("click", function(){
-           gridData[index].isSelected = !(gridData[index].isSelected);
-       });
-   }
-}
-
 
 function getAvergae (index){
     let averageTemp = 0;
@@ -122,14 +111,15 @@ else
 
 
 function cycleGrid (){
-for (index = 0; index <= gridSize ; index++){
+for (index = 0; index <= 99 ; index++){
     if (gridData[index].selected == true){gridData[index].temperature = getAvergae(index)}
     else{gridData[index].temperature = gridData[index].temperature +1;}
 }
+console.log("grid cycle complete");
 }
 
 function upddateGrid (){
-for(index = 0 ; index <= gridSize; index++){
+for(index = 0 ; index < gridSize; index++){
     if (gridData[index].temperature > 100){gridData[index].colorString = "red";}
     if (gridData[index].temperature > 200){gridData[index].colorString = "orange";}
     if (gridData[index].temperature > 300){gridData[index].colorString = "yellow";}
@@ -138,12 +128,21 @@ for(index = 0 ; index <= gridSize; index++){
     if (gridData[index].temperature > 600){gridData[index].colorString = "indigo";}
     if (gridData[index].temperature > 700){gridData[index].colorString = "violet";}
     gridData[index].screenrep.style.backgroundColor = gridData[index].colorString; }
+    console.log("grid update complete");
 }
+initializeGridData();
 
-function mainLogic () {
-    upddateGrid();
-    cycleGrid();
-}
+$(function() {   
+    $('.gridElement').click(function(){
+        //let thisColor = "";
+        let gridIndex = Array.prototype.indexOf.call(theGrid,this);
+        //if(gridData[gridIndex].isSelected = true){thisColor = "gold";}
+        //if(gridData[gridIndex].isSelected = false){thisColor = "black";}
+        //$(this).css('background', thisColor);
+        gridData[gridIndex].isSelected = !gridData[gridIndex].isSelected
+      });
+    });
 
-setEvents();
-setInterval(function(){mainLogic},500);
+setInterval(cycleGrid,100);
+setInterval(upddateGrid,100);
+
